@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MODULES, IMAGES } from '../data/protocolData';
 import { Search, Sun, Moon, Smile, Leaf, Check, ArrowRight, BookOpen, Layers } from 'lucide-react';
+import { trackCustomEvent } from '../lib/fbPixel';
 
 interface WhatYouGetProps {
   onOpenCheckout: () => void;
@@ -11,6 +12,11 @@ export const WhatYouGet: React.FC<WhatYouGetProps> = ({ onOpenCheckout, onOpenPo
   const [activeModuleId, setActiveModuleId] = useState(MODULES[0].id);
 
   const activeModule = MODULES.find(m => m.id === activeModuleId) || MODULES[0];
+
+  const handleSelectModule = (id: string, title: string, number: number) => {
+    setActiveModuleId(id);
+    trackCustomEvent('ViewModuleDetails', { moduleTitle: title, moduleNumber: number });
+  };
 
   const getModuleIcon = (iconName: string) => {
     switch (iconName) {
@@ -64,7 +70,7 @@ export const WhatYouGet: React.FC<WhatYouGetProps> = ({ onOpenCheckout, onOpenPo
               return (
                 <button
                   key={mod.id}
-                  onClick={() => setActiveModuleId(mod.id)}
+                  onClick={() => handleSelectModule(mod.id, mod.title, mod.number)}
                   className={`w-full text-left p-4 rounded-2xl transition-all duration-200 border flex items-center justify-between group ${
                     isActive
                       ? 'bg-[#1A3323] text-[#FDFBF7] border-[#1A3323] shadow-md scale-[1.01]'

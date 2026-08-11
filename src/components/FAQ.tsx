@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { FAQS } from '../data/protocolData';
 import { ChevronDown, HelpCircle } from 'lucide-react';
+import { trackCustomEvent } from '../lib/fbPixel';
 
 export const FAQ: React.FC = () => {
   const [openId, setOpenId] = useState<string | null>(FAQS[0].id);
 
-  const toggle = (id: string) => {
-    setOpenId(openId === id ? null : id);
+  const toggle = (id: string, question: string) => {
+    const isOpening = openId !== id;
+    setOpenId(isOpening ? id : null);
+    if (isOpening) {
+      trackCustomEvent('ViewFAQ', { question });
+    }
   };
 
   return (
@@ -39,7 +44,7 @@ export const FAQ: React.FC = () => {
                 className="bg-[#F8F3EE]/50 rounded-2xl border border-[#E6D5B8]/80 overflow-hidden transition-all"
               >
                 <button
-                  onClick={() => toggle(faq.id)}
+                  onClick={() => toggle(faq.id, faq.question)}
                   className="w-full text-left p-5 flex items-center justify-between gap-4 font-serif text-lg font-bold text-[#1A3323] hover:text-[#264A35] transition-colors"
                 >
                   <span>{faq.question}</span>

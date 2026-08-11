@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Sparkles, Check, ArrowRight, RefreshCw, Leaf } from 'lucide-react';
+import { trackLead, trackCustomEvent } from '../lib/fbPixel';
 
 interface SkinQuizModalProps {
   isOpen: boolean;
@@ -20,6 +21,27 @@ export const SkinQuizModal: React.FC<SkinQuizModalProps> = ({ isOpen, onClose, o
     setSkinType('');
     setConcern('');
     setTimeAvailable('');
+    trackCustomEvent('QuizReset');
+  };
+
+  const handleStep1Select = (label: string) => {
+    setSkinType(label);
+    setStep(2);
+    trackCustomEvent('QuizStep1', { answer: label });
+  };
+
+  const handleStep2Select = (label: string) => {
+    setConcern(label);
+    setStep(3);
+    trackCustomEvent('QuizStep2', { answer: label });
+  };
+
+  const handleStep3Select = (label: string) => {
+    setTimeAvailable(label);
+    setStep(4); // Result
+    trackCustomEvent('QuizStep3', { answer: label });
+    // Fire Lead event when quiz completes!
+    trackLead(skinType || label, 100);
   };
 
   return (
@@ -78,10 +100,7 @@ export const SkinQuizModal: React.FC<SkinQuizModalProps> = ({ isOpen, onClose, o
                     ].map((opt) => (
                       <button
                         key={opt.id}
-                        onClick={() => {
-                          setSkinType(opt.label);
-                          setStep(2);
-                        }}
+                        onClick={() => handleStep1Select(opt.label)}
                         className="w-full text-left p-3.5 rounded-2xl border border-[#E6D5B8] bg-[#F8F3EE]/60 hover:bg-[#1A3323] hover:text-[#FDFBF7] transition-all text-xs font-medium flex items-center justify-between group"
                       >
                         <span>{opt.label}</span>
@@ -108,10 +127,7 @@ export const SkinQuizModal: React.FC<SkinQuizModalProps> = ({ isOpen, onClose, o
                     ].map((opt) => (
                       <button
                         key={opt.id}
-                        onClick={() => {
-                          setConcern(opt.label);
-                          setStep(3);
-                        }}
+                        onClick={() => handleStep2Select(opt.label)}
                         className="w-full text-left p-3.5 rounded-2xl border border-[#E6D5B8] bg-[#F8F3EE]/60 hover:bg-[#1A3323] hover:text-[#FDFBF7] transition-all text-xs font-medium flex items-center justify-between group"
                       >
                         <span>{opt.label}</span>
@@ -137,10 +153,7 @@ export const SkinQuizModal: React.FC<SkinQuizModalProps> = ({ isOpen, onClose, o
                     ].map((opt) => (
                       <button
                         key={opt.id}
-                        onClick={() => {
-                          setTimeAvailable(opt.label);
-                          setStep(4); // Result
-                        }}
+                        onClick={() => handleStep3Select(opt.label)}
                         className="w-full text-left p-3.5 rounded-2xl border border-[#E6D5B8] bg-[#F8F3EE]/60 hover:bg-[#1A3323] hover:text-[#FDFBF7] transition-all text-xs font-medium flex items-center justify-between group"
                       >
                         <span>{opt.label}</span>

@@ -14,12 +14,19 @@ import { Footer } from './components/Footer';
 import { SkinQuizModal } from './components/SkinQuizModal';
 import { CheckoutModal } from './components/CheckoutModal';
 import { DigitalPortalModal } from './components/DigitalPortalModal';
+import { trackPageView, trackViewContent, trackCustomEvent, trackInitiateCheckout } from './lib/fbPixel';
 
 export default function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [isQuizOpen, setIsQuizOpen] = useState(false);
   const [isPortalOpen, setIsPortalOpen] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(false);
+
+  // Track initial page view & view content
+  useEffect(() => {
+    trackPageView();
+    trackViewContent('Rituel Amazônia Landing Page', 'Sales Page', 9.90);
+  }, []);
 
   // Web Audio Synth for Amazon Rain & Gentle Wind Ambience
   const audioCtxRef = useRef<AudioContext | null>(null);
@@ -31,6 +38,7 @@ export default function App() {
         audioCtxRef.current.suspend();
       }
       setAudioPlaying(false);
+      trackCustomEvent('AudioAmbience', { status: 'paused' });
     } else {
       try {
         if (!audioCtxRef.current) {
@@ -69,6 +77,7 @@ export default function App() {
           audioCtxRef.current.resume();
         }
         setAudioPlaying(true);
+        trackCustomEvent('AudioAmbience', { status: 'playing' });
       } catch (err) {
         console.log("Audio play error:", err);
         setAudioPlaying(false);
@@ -76,17 +85,28 @@ export default function App() {
     }
   };
 
+  const handleOpenCheckout = (source: string = 'CTA Button') => {
+    trackInitiateCheckout(source, 9.90, 'EUR');
+    setIsCheckoutOpen(true);
+  };
+
+  const handleOpenQuiz = (source: string = 'Header/Hero CTA') => {
+    trackCustomEvent('StartQuiz', { source });
+    setIsQuizOpen(true);
+  };
+
   const handleCheckoutSuccess = () => {
     setIsCheckoutOpen(false);
     setIsPortalOpen(true);
+    trackViewContent('Digital Portal Access', 'Member Area', 9.90);
   };
 
   return (
     <div className="min-[#100vh] bg-[#FDFBF7] text-[#2C3531] font-sans relative flex flex-col selection:bg-[#E2D4C3] selection:text-[#1A3323]">
       {/* Top Header */}
       <Header
-        onOpenCheckout={() => setIsCheckoutOpen(true)}
-        onOpenQuiz={() => setIsQuizOpen(true)}
+        onOpenCheckout={() => handleOpenCheckout('Header CTA')}
+        onOpenQuiz={() => handleOpenQuiz('Header Quiz Button')}
         audioPlaying={audioPlaying}
         toggleAudio={toggleAudio}
       />
@@ -95,34 +115,37 @@ export default function App() {
       <main className="flex-1">
         {/* Section 1: Hero */}
         <Hero
-          onOpenCheckout={() => setIsCheckoutOpen(true)}
-          onOpenQuiz={() => setIsQuizOpen(true)}
+          onOpenCheckout={() => handleOpenCheckout('Hero Main CTA')}
+          onOpenQuiz={() => handleOpenQuiz('Hero Quiz CTA')}
         />
 
         {/* Section 2: Desire Awakening */}
         <DesireAwakening
-          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenCheckout={() => handleOpenCheckout('Desire Awakening CTA')}
         />
 
         {/* Section 3: Benefits */}
         <Benefits
-          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenCheckout={() => handleOpenCheckout('Benefits Section CTA')}
         />
 
         {/* Section 4: What You Get (5 Modules) */}
         <WhatYouGet
-          onOpenCheckout={() => setIsCheckoutOpen(true)}
-          onOpenPortal={() => setIsPortalOpen(true)}
+          onOpenCheckout={() => handleOpenCheckout('Modules Section CTA')}
+          onOpenPortal={() => {
+            trackCustomEvent('PreviewDigitalPortal');
+            setIsPortalOpen(true);
+          }}
         />
 
         {/* Section 5: Transformation / Before vs After */}
         <TransformationComparison
-          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenCheckout={() => handleOpenCheckout('Transformation Section CTA')}
         />
 
         {/* Section 6: Value Proof & Stack (9,90 €) */}
         <ValueProof
-          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenCheckout={() => handleOpenCheckout('Value Stack Offer CTA')}
         />
 
         {/* Testimonials */}
@@ -133,21 +156,21 @@ export default function App() {
 
         {/* Section 7: Final CTA */}
         <CTASection
-          onOpenCheckout={() => setIsCheckoutOpen(true)}
+          onOpenCheckout={() => handleOpenCheckout('Bottom Final CTA')}
         />
       </main>
 
       {/* Footer */}
       <Footer
-        onOpenCheckout={() => setIsCheckoutOpen(true)}
-        onOpenQuiz={() => setIsQuizOpen(true)}
+        onOpenCheckout={() => handleOpenCheckout('Footer CTA')}
+        onOpenQuiz={() => handleOpenQuiz('Footer Quiz Link')}
       />
 
       {/* Modals */}
       <SkinQuizModal
         isOpen={isQuizOpen}
         onClose={() => setIsQuizOpen(false)}
-        onOpenCheckout={() => setIsCheckoutOpen(true)}
+        onOpenCheckout={() => handleOpenCheckout('Skin Quiz Result CTA')}
       />
 
       <CheckoutModal

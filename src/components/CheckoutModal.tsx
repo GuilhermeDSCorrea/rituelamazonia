@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Lock, ShieldCheck, Check, Sparkles, CreditCard, ArrowRight, Download, Laptop } from 'lucide-react';
 import { PROGRAM_INFO } from '../data/protocolData';
+import { trackInitiateCheckout, trackAddPaymentInfo, trackPurchase } from '../lib/fbPixel';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -15,6 +16,17 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, o
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    if (isOpen) {
+      trackInitiateCheckout('Checkout Modal Open', 9.90, 'EUR');
+    }
+  }, [isOpen]);
+
+  const handleSelectPayment = (method: 'card' | 'apple' | 'paypal') => {
+    setPaymentMethod(method);
+    trackAddPaymentInfo(method === 'card' ? 'Credit Card' : method === 'apple' ? 'Apple Pay' : 'PayPal', 9.90);
+  };
+
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -26,9 +38,13 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, o
     setError('');
     setIsProcessing(true);
 
+    // Track payment submission
+    trackAddPaymentInfo(paymentMethod, 9.90);
+
     // Simulate instant payment approval
     setTimeout(() => {
       setIsProcessing(false);
+      trackPurchase(9.90, 'EUR', `AMZ-${Date.now()}`);
       onSuccess();
     }, 1500);
   };
@@ -121,7 +137,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, o
               <div className="grid grid-cols-3 gap-2">
                 <button
                   type="button"
-                  onClick={() => setPaymentMethod('card')}
+                  onClick={() => handleSelectPayment('card')}
                   className={`p-3 rounded-xl border text-xs font-semibold flex flex-col items-center justify-center gap-1 transition-all ${
                     paymentMethod === 'card'
                       ? 'bg-[#1A3323] text-[#FDFBF7] border-[#1A3323]'
@@ -134,7 +150,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, o
 
                 <button
                   type="button"
-                  onClick={() => setPaymentMethod('apple')}
+                  onClick={() => handleSelectPayment('apple')}
                   className={`p-3 rounded-xl border text-xs font-semibold flex flex-col items-center justify-center gap-1 transition-all ${
                     paymentMethod === 'apple'
                       ? 'bg-[#1A3323] text-[#FDFBF7] border-[#1A3323]'
@@ -147,7 +163,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, o
 
                 <button
                   type="button"
-                  onClick={() => setPaymentMethod('paypal')}
+                  onClick={() => handleSelectPayment('paypal')}
                   className={`p-3 rounded-xl border text-xs font-semibold flex flex-col items-center justify-center gap-1 transition-all ${
                     paymentMethod === 'paypal'
                       ? 'bg-[#1A3323] text-[#FDFBF7] border-[#1A3323]'
