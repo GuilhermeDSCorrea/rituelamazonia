@@ -1,0 +1,6 @@
+{
+  "name": "Rituel Amazônia",
+  "description": "Page de vente française premium et émotionnelle pour le protocole de skincare digital Rituel Amazônia à 9,90 €.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
