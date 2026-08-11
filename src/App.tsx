@@ -14,7 +14,7 @@ import { Footer } from './components/Footer';
 import { SkinQuizModal } from './components/SkinQuizModal';
 import { CheckoutModal } from './components/CheckoutModal';
 import { DigitalPortalModal } from './components/DigitalPortalModal';
-import { trackPageView, trackViewContent, trackCustomEvent, trackInitiateCheckout } from './lib/fbPixel';
+import { trackPageView, trackViewContent, trackCustomEvent, trackInitiateCheckout, HOTMART_CHECKOUT_URL } from './lib/fbPixel';
 
 export default function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
@@ -87,7 +87,7 @@ export default function App() {
 
   const handleOpenCheckout = (source: string = 'CTA Button') => {
     trackInitiateCheckout(source, 9.90, 'EUR');
-    setIsCheckoutOpen(true);
+    window.location.href = HOTMART_CHECKOUT_URL;
   };
 
   const handleOpenQuiz = (source: string = 'Header/Hero CTA') => {

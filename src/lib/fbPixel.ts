@@ -9,6 +9,7 @@ declare global {
 }
 
 export const FB_PIXEL_ID = '1973735293326543';
+export const HOTMART_CHECKOUT_URL = 'https://pay.hotmart.com/H107106126D?bid=1786491843666';
 
 // Helper safely calling fbq
 const safeFbq = (

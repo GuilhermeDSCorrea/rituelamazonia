@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { X, Lock, ShieldCheck, Check, Sparkles, CreditCard, ArrowRight, Download, Laptop } from 'lucide-react';
+import { X, Lock, ShieldCheck, Check, Sparkles, CreditCard, ArrowRight, Download, Laptop, ExternalLink } from 'lucide-react';
 import { PROGRAM_INFO } from '../data/protocolData';
-import { trackInitiateCheckout, trackAddPaymentInfo, trackPurchase } from '../lib/fbPixel';
+import { trackInitiateCheckout, trackAddPaymentInfo, trackPurchase, HOTMART_CHECKOUT_URL } from '../lib/fbPixel';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -40,13 +40,12 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({ isOpen, onClose, o
 
     // Track payment submission
     trackAddPaymentInfo(paymentMethod, 9.90);
+    trackPurchase(9.90, 'EUR', `AMZ-${Date.now()}`);
 
-    // Simulate instant payment approval
+    // Redirect directly to Hotmart Checkout
     setTimeout(() => {
-      setIsProcessing(false);
-      trackPurchase(9.90, 'EUR', `AMZ-${Date.now()}`);
-      onSuccess();
-    }, 1500);
+      window.location.href = HOTMART_CHECKOUT_URL;
+    }, 400);
   };
 
   return (
