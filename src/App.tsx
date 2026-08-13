@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { DesireAwakening } from './components/DesireAwakening';
+import { AmazonAncestryShowcase } from './components/AmazonAncestryShowcase';
 import { Benefits } from './components/Benefits';
 import { WhatYouGet } from './components/WhatYouGet';
 import { TransformationComparison } from './components/TransformationComparison';
@@ -14,6 +15,7 @@ import { Footer } from './components/Footer';
 import { SkinQuizModal } from './components/SkinQuizModal';
 import { CheckoutModal } from './components/CheckoutModal';
 import { DigitalPortalModal } from './components/DigitalPortalModal';
+import { ForestFoliageOverlay } from './components/ForestFoliageOverlay';
 import { trackPageView, trackViewContent, trackCustomEvent, trackInitiateCheckout, HOTMART_CHECKOUT_URL } from './lib/fbPixel';
 
 export default function App() {
@@ -102,7 +104,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-[#100vh] bg-[#FDFBF7] text-[#2C3531] font-sans relative flex flex-col selection:bg-[#E2D4C3] selection:text-[#1A3323]">
+    <div className="min-h-screen bg-[#FDFBF7] text-[#2C3531] font-sans relative flex flex-col selection:bg-[#E2D4C3] selection:text-[#1A3323]">
+      {/* Rainforest Foliage Overlay Visuals */}
+      <ForestFoliageOverlay />
+
       {/* Top Header */}
       <Header
         onOpenCheckout={() => handleOpenCheckout('Header CTA')}
@@ -124,12 +129,17 @@ export default function App() {
           onOpenCheckout={() => handleOpenCheckout('Desire Awakening CTA')}
         />
 
-        {/* Section 3: Benefits */}
+        {/* Section 3: Ancestral Amazon Botanicals & Trees Showcase */}
+        <AmazonAncestryShowcase
+          onOpenCheckout={() => handleOpenCheckout('Amazon Ancestry Showcase CTA')}
+        />
+
+        {/* Section 4: Benefits */}
         <Benefits
           onOpenCheckout={() => handleOpenCheckout('Benefits Section CTA')}
         />
 
-        {/* Section 4: What You Get (5 Modules) */}
+        {/* Section 5: What You Get (5 Modules) */}
         <WhatYouGet
           onOpenCheckout={() => handleOpenCheckout('Modules Section CTA')}
           onOpenPortal={() => {
@@ -138,12 +148,12 @@ export default function App() {
           }}
         />
 
-        {/* Section 5: Transformation / Before vs After */}
+        {/* Section 6: Transformation / Before vs After */}
         <TransformationComparison
           onOpenCheckout={() => handleOpenCheckout('Transformation Section CTA')}
         />
 
-        {/* Section 6: Value Proof & Stack (9,90 €) */}
+        {/* Section 7: Value Proof & Stack (9,90 €) */}
         <ValueProof
           onOpenCheckout={() => handleOpenCheckout('Value Stack Offer CTA')}
         />
@@ -154,7 +164,7 @@ export default function App() {
         {/* FAQ Accordion */}
         <FAQ />
 
-        {/* Section 7: Final CTA */}
+        {/* Section 8: Final CTA */}
         <CTASection
           onOpenCheckout={() => handleOpenCheckout('Bottom Final CTA')}
         />
@@ -186,3 +196,4 @@ export default function App() {
     </div>
   );
 }
+

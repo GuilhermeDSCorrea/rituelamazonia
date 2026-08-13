@@ -1,5 +1,5 @@
 import React from 'react';
-import { Feather, Compass, Calendar, Sparkles, Heart, RefreshCw, Layers } from 'lucide-react';
+import { Feather, Compass, Calendar, Sparkles, Heart, RefreshCw, Layers, Leaf, Trees } from 'lucide-react';
 import { BENEFITS } from '../data/protocolData';
 
 interface BenefitsProps {
@@ -27,17 +27,27 @@ export const Benefits: React.FC<BenefitsProps> = ({ onOpenCheckout }) => {
   };
 
   return (
-    <section className="py-20 bg-[#F8F3EE]/60 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 bg-[#F8F3EE]/90 relative overflow-hidden">
+      
+      {/* Background Subtle Leaf Icon Watermarks */}
+      <div className="absolute -top-10 -left-10 w-72 h-72 text-[#1A3323]/5 pointer-events-none">
+        <Leaf className="w-full h-full" />
+      </div>
+      <div className="absolute -bottom-10 -right-10 w-72 h-72 text-[#1A3323]/5 pointer-events-none">
+        <Trees className="w-full h-full" />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#B89753] block">
-            Les Piliers du Protocole
-          </span>
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#1A3323]/10 border border-[#1A3323]/20 text-[#1A3323] text-xs font-semibold tracking-wider uppercase">
+            <Trees className="w-3.5 h-3.5 text-[#B89753]" />
+            <span>Les Piliers de l'Équilibre Amazonien</span>
+          </div>
           
           <h2 className="font-serif text-3xl sm:text-4xl text-[#1A3323] font-semibold leading-tight">
-            Les 6 bénéfices de votre nouvelle routine
+            Les 6 bénéfices essentiels de votre nouvelle routine
           </h2>
 
           <p className="text-sm text-[#2C3531]/80 leading-relaxed">
@@ -50,10 +60,10 @@ export const Benefits: React.FC<BenefitsProps> = ({ onOpenCheckout }) => {
           {BENEFITS.map((benefit) => (
             <div
               key={benefit.id}
-              className="bg-[#FDFBF7] p-6 sm:p-8 rounded-2xl border border-[#E6D5B8]/60 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1"
+              className="bg-[#FDFBF7] p-6 sm:p-8 rounded-2xl border border-[#E6D5B8] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1 relative overflow-hidden"
             >
               <div>
-                <div className="w-12 h-12 rounded-xl bg-[#F8F3EE] border border-[#E6D5B8]/40 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-xl bg-[#1A3323]/10 border border-[#1A3323]/20 flex items-center justify-center mb-5 group-hover:scale-110 group-hover:bg-[#1A3323] group-hover:text-[#E6C875] transition-all">
                   {getIcon(benefit.iconName)}
                 </div>
 
@@ -70,8 +80,8 @@ export const Benefits: React.FC<BenefitsProps> = ({ onOpenCheckout }) => {
                 </p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[#E6D5B8]/30 flex items-center gap-2 text-xs font-medium text-[#1A3323]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#B89753]" />
+              <div className="mt-6 pt-4 border-t border-[#E6D5B8]/60 flex items-center gap-2 text-xs font-medium text-[#1A3323]">
+                <Leaf className="w-3.5 h-3.5 text-[#B89753]" />
                 <span>Inclus dans le protocole à 9,90 €</span>
               </div>
             </div>
@@ -81,12 +91,12 @@ export const Benefits: React.FC<BenefitsProps> = ({ onOpenCheckout }) => {
         {/* Bottom Banner callout */}
         <div className="mt-12 text-center">
           <p className="text-xs text-[#2C3531]/70 mb-4">
-            Un protocole complet, sans abonnement, directement accessible sur votre smartphone ou tablette.
+            Un protocole complet, sans aucun abonnement, directement accessible sur votre smartphone, tablette ou ordinateur.
           </p>
 
           <button
             onClick={onOpenCheckout}
-            className="bg-[#1A3323] hover:bg-[#264A35] text-[#FDFBF7] px-8 py-3.5 rounded-full text-xs sm:text-sm font-medium tracking-wide transition-all shadow-md hover:shadow-lg"
+            className="bg-[#1A3323] hover:bg-[#264A35] text-[#FDFBF7] px-8 py-3.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all shadow-md hover:shadow-xl uppercase"
           >
             Découvrir Rituel Amazônia pour 9,90 €
           </button>
@@ -96,3 +106,4 @@ export const Benefits: React.FC<BenefitsProps> = ({ onOpenCheckout }) => {
     </section>
   );
 };
+
