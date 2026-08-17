@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
+import { AmazonInteractiveQuiz } from './components/AmazonInteractiveQuiz';
 import { DesireAwakening } from './components/DesireAwakening';
-import { AmazonAncestryShowcase } from './components/AmazonAncestryShowcase';
 import { Benefits } from './components/Benefits';
 import { WhatYouGet } from './components/WhatYouGet';
 import { TransformationComparison } from './components/TransformationComparison';
@@ -94,7 +94,17 @@ export default function App() {
 
   const handleOpenQuiz = (source: string = 'Header/Hero CTA') => {
     trackCustomEvent('StartQuiz', { source });
-    setIsQuizOpen(true);
+    const quizEl = document.getElementById('quiz-amazonien');
+    if (quizEl) {
+      quizEl.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      setIsQuizOpen(true);
+    }
+  };
+
+  const handleScrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleCheckoutSuccess = () => {
@@ -112,6 +122,7 @@ export default function App() {
       <Header
         onOpenCheckout={() => handleOpenCheckout('Header CTA')}
         onOpenQuiz={() => handleOpenQuiz('Header Quiz Button')}
+        onScrollToSection={handleScrollToSection}
         audioPlaying={audioPlaying}
         toggleAudio={toggleAudio}
       />
@@ -124,17 +135,18 @@ export default function App() {
           onOpenQuiz={() => handleOpenQuiz('Hero Quiz CTA')}
         />
 
-        {/* Section 2: Desire Awakening */}
+        {/* Section 2: Interactive Amazon Diagnostic Quiz (Primary Interactive Diagnostic) */}
+        <AmazonInteractiveQuiz
+          onOpenCheckout={() => handleOpenCheckout('Interactive Quiz Result CTA')}
+          standalone={false}
+        />
+
+        {/* Section 3: Le Secret Ancestral & Dévoilement des Bio-Actifs */}
         <DesireAwakening
           onOpenCheckout={() => handleOpenCheckout('Desire Awakening CTA')}
         />
 
-        {/* Section 3: Ancestral Amazon Botanicals & Trees Showcase */}
-        <AmazonAncestryShowcase
-          onOpenCheckout={() => handleOpenCheckout('Amazon Ancestry Showcase CTA')}
-        />
-
-        {/* Section 4: Benefits */}
+        {/* Section 4: Benefits & Skin Transformation Pillars */}
         <Benefits
           onOpenCheckout={() => handleOpenCheckout('Benefits Section CTA')}
         />
@@ -153,18 +165,18 @@ export default function App() {
           onOpenCheckout={() => handleOpenCheckout('Transformation Section CTA')}
         />
 
-        {/* Section 7: Value Proof & Stack (9,90 €) */}
+        {/* Section 7: Value Proof & Stack (9,90 € Offer) */}
         <ValueProof
           onOpenCheckout={() => handleOpenCheckout('Value Stack Offer CTA')}
         />
 
-        {/* Testimonials */}
+        {/* Section 8: Testimonials */}
         <Testimonials />
 
-        {/* FAQ Accordion */}
+        {/* Section 9: FAQ Accordion */}
         <FAQ />
 
-        {/* Section 8: Final CTA */}
+        {/* Section 10: Final CTA */}
         <CTASection
           onOpenCheckout={() => handleOpenCheckout('Bottom Final CTA')}
         />
@@ -180,7 +192,7 @@ export default function App() {
       <SkinQuizModal
         isOpen={isQuizOpen}
         onClose={() => setIsQuizOpen(false)}
-        onOpenCheckout={() => handleOpenCheckout('Skin Quiz Result CTA')}
+        onOpenCheckout={() => handleOpenCheckout('Skin Quiz Modal Result CTA')}
       />
 
       <CheckoutModal
@@ -196,4 +208,5 @@ export default function App() {
     </div>
   );
 }
+
 

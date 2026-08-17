@@ -4,7 +4,7 @@ import { TESTIMONIALS } from '../data/protocolData';
 
 export const Testimonials: React.FC = () => {
   return (
-    <section className="py-20 bg-[#F8F3EE]/60 relative">
+    <section id="avis-clientes" className="py-20 bg-[#F8F3EE]/60 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}

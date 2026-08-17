@@ -45,7 +45,7 @@ export const BENEFITS: BenefitItem[] = [
   },
   {
     id: "elegance",
-    title: "Élégance Sensorielles",
+    title: "Élégance Sensorielle",
     subtitle: "L'art du soin comme un spa à la maison",
     description: "Inspiré de la richesse botanique de l'Amazonie, transformez votre routine en un véritable instant de reconnexion féminine.",
     iconName: "Sparkles"

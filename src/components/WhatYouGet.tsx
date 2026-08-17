@@ -13,9 +13,9 @@ export const WhatYouGet: React.FC<WhatYouGetProps> = ({ onOpenCheckout, onOpenPo
 
   const activeModule = MODULES.find(m => m.id === activeModuleId) || MODULES[0];
 
-  const handleSelectModule = (id: string, title: string, number: number) => {
+  const handleSelectModule = (id: string, title: string, number: string | number) => {
     setActiveModuleId(id);
-    trackCustomEvent('ViewModuleDetails', { moduleTitle: title, moduleNumber: number });
+    trackCustomEvent('ViewModuleDetails', { moduleTitle: title, moduleNumber: String(number) });
   };
 
   const getModuleIcon = (iconName: string) => {
@@ -36,7 +36,7 @@ export const WhatYouGet: React.FC<WhatYouGetProps> = ({ onOpenCheckout, onOpenPo
   };
 
   return (
-    <section id="programme" className="py-20 bg-[#FDFBF7] relative">
+    <section id="protocole-modules" className="py-20 bg-[#FDFBF7] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header */}

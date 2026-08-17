@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Leaf, Sparkles, Sun, Shield, Heart, Feather, ArrowRight, Compass, Trees, Drops } from 'lucide-react';
+import { Leaf, Sparkles, Sun, Shield, Heart, Feather, ArrowRight, Compass, Trees, Droplets } from 'lucide-react';
 import { ANCESTRAL_PLANTS, AMAZON_FOREST_IMAGES, AncestralPlant } from '../data/ancestralData';
 import { trackCustomEvent } from '../lib/fbPixel';
 
